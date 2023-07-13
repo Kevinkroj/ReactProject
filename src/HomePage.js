@@ -13,7 +13,7 @@ const HomePage = props => {
     <Background>
       <View>
         <Text style={{color: 'black', fontSize: 36, marginVertical: 100}}>
-          Welcome To my App
+          Welcome To my Apppp
         </Text>
       </View>
     </Background>
