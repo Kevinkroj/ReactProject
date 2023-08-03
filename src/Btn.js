@@ -15,11 +15,13 @@ export default function Btn({bgColor, btnLabel, textColor, Press}) {
       onPress={Press}
       style={{
         backgroundColor: bgColor,
-        borderRadius: 100,
+
         alignItems: 'center',
-        width: 280,
+        width: 220,
         paddingVertical: 5,
         marginVertical: 10,
+        alignContent: 'center',
+        alignSelf: 'center',
       }}>
       <Text style={{color: textColor, fontSize: 18, fontWeight: 'bold'}}>
         {btnLabel}

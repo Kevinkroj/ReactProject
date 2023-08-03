@@ -375,7 +375,11 @@ PODS:
   - React-jsinspector (0.72.2)
   - React-logger (0.72.2):
     - glog
+  - react-native-orientation-locker (1.5.0):
+    - React-Core
   - react-native-safe-area-context (4.7.1):
+    - React-Core
+  - react-native-slider (4.4.2):
     - React-Core
   - react-native-video (5.2.1):
     - React-Core
@@ -492,9 +496,13 @@ PODS:
     - React-jsi (= 0.72.2)
     - React-logger (= 0.72.2)
     - React-perflogger (= 0.72.2)
+  - RNFlashList (1.5.0):
+    - React-Core
   - RNScreens (3.22.1):
     - React-Core
     - React-RCTImage
+  - RNVectorIcons (9.2.0):
+    - React-Core
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -546,7 +554,9 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-video (from `../node_modules/react-native-video`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -565,7 +575,9 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -629,8 +641,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-orientation-locker:
+    :path: "../node_modules/react-native-orientation-locker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
   react-native-video:
     :path: "../node_modules/react-native-video"
   React-NativeModulesApple:
@@ -667,8 +683,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNFlashList:
+    :path: "../node_modules/@shopify/flash-list"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -706,7 +726,9 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 2c53849838b096599bd04cbbf11a6b67a1781e7b
   React-jsinspector: 36bb3067723df92b7ea564a28ee61a2282a696bc
   React-logger: 48a3629a61899735cbfa9f0b8c5cd44cb1561952
+  react-native-orientation-locker: 851f6510d8046ea2f14aa169b1e01fcd309a94ba
   react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
+  react-native-slider: 33b8d190b59d4f67a541061bb91775d53d617d9d
   react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253
   React-NativeModulesApple: 5dfdf09b36ffad0c08f401e86569b8f170a0035d
   React-perflogger: e7006abd30efeebef143702550063ca3415e267a
@@ -725,7 +747,9 @@ SPEC CHECKSUMS:
   React-runtimescheduler: dbea23f2991dfa010654165de8159862935aed27
   React-utils: ec05233cf7ee1d7014d41aaa17ec65ceeba8948d
   ReactCommon: 77382645a088a81de55c24bde19c5a2805d891c3
+  RNFlashList: 25b0e092b4470c84db0386d4f5316dc34123bb6d
   RNScreens: 50ffe2fa2342eabb2d0afbe19f7c1af286bc7fb3
+  RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: c79810ea24a2a73b7f39174e78d60f4e28261f33
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

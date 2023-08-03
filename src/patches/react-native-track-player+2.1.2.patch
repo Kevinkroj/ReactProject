@@ -1,0 +1,78 @@
+diff --git a/node_modules/react-native-track-player/android/build.gradle b/node_modules/react-native-track-player/android/build.gradle
+index a241d94..48138f9 100644
+--- a/node_modules/react-native-track-player/android/build.gradle
++++ b/node_modules/react-native-track-player/android/build.gradle
+@@ -60,7 +60,7 @@ dependencies {
+     //noinspection GradleDynamicVersion
+     implementation 'com.facebook.react:react-native:+'
+     
+-    def exoPlayerVersion = safeExtGet("exoPlayerVersion", '2.11.4')
++    def exoPlayerVersion = safeExtGet("exoPlayerVersion", '2.13.2')
+ 
+     // ExoPlayer Core
+     implementation "com.google.android.exoplayer:exoplayer-core:${exoPlayerVersion}"
+diff --git a/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/MusicManager.java b/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/MusicManager.java
+index 61d17bf..02ab312 100644
+--- a/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/MusicManager.java
++++ b/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/MusicManager.java
+@@ -133,7 +133,7 @@ public class MusicManager implements OnAudioFocusChangeListener {
+                 .build();
+ 
+         player.setAudioAttributes(new com.google.android.exoplayer2.audio.AudioAttributes.Builder()
+-                .setContentType(C.CONTENT_TYPE_MUSIC).setUsage(C.USAGE_MEDIA).build());
++                .setContentType(C.CONTENT_TYPE_MUSIC).setUsage(C.USAGE_MEDIA).build(), false);
+ 
+         return new LocalPlayback(service, this, player, cacheMaxSize, autoUpdateMetadata);
+     }
+diff --git a/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/player/ExoPlayback.java b/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/player/ExoPlayback.java
+index 37a6fbf..1d2199f 100644
+--- a/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/player/ExoPlayback.java
++++ b/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/player/ExoPlayback.java
+@@ -8,7 +8,7 @@ import com.facebook.react.bridge.Promise;
+ import com.google.android.exoplayer2.*;
+ import com.google.android.exoplayer2.Player.EventListener;
+ import com.google.android.exoplayer2.Timeline.Window;
+-import com.google.android.exoplayer2.extractor.mp4.MdtaMetadataEntry;
++//import com.google.android.exoplayer2.extractor.mp4.MdtaMetadataEntry;
+ import com.google.android.exoplayer2.metadata.Metadata;
+ import com.google.android.exoplayer2.metadata.MetadataOutput;
+ import com.google.android.exoplayer2.metadata.flac.VorbisComment;
+@@ -247,7 +247,7 @@ public abstract class ExoPlayback<T extends Player> implements EventListener, Me
+     public void onTimelineChanged(@NonNull Timeline timeline, int reason) {
+         Log.d(Utils.LOG, "onTimelineChanged: " + reason);
+ 
+-        if((reason == Player.TIMELINE_CHANGE_REASON_PREPARED || reason == Player.TIMELINE_CHANGE_REASON_DYNAMIC) && !timeline.isEmpty()) {
++        if(reason == Player.TIMELINE_CHANGE_REASON_PLAYLIST_CHANGED && !timeline.isEmpty()) {
+             onPositionDiscontinuity(Player.DISCONTINUITY_REASON_INTERNAL);
+         }
+     }
+diff --git a/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/player/SourceMetadata.java b/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/player/SourceMetadata.java
+index 069cbbd..3c97835 100644
+--- a/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/player/SourceMetadata.java
++++ b/node_modules/react-native-track-player/android/src/main/java/com/guichaguri/trackplayer/service/player/SourceMetadata.java
+@@ -1,6 +1,6 @@
+ package com.guichaguri.trackplayer.service.player;
+ 
+-import com.google.android.exoplayer2.extractor.mp4.MdtaMetadataEntry;
++//import com.google.android.exoplayer2.extractor.mp4.MdtaMetadataEntry;
+ import com.google.android.exoplayer2.metadata.Metadata;
+ import com.google.android.exoplayer2.metadata.flac.VorbisComment;
+ import com.google.android.exoplayer2.metadata.icy.IcyHeaders;
+@@ -146,7 +146,7 @@ public class SourceMetadata {
+     private static void handleQuickTimeMetadata(MusicManager manager, Metadata metadata) {
+         String title = null, artist = null, album = null, date = null, genre = null;
+ 
+-        for (int i = 0; i < metadata.length(); i++) {
++        /*for (int i = 0; i < metadata.length(); i++) {
+             Metadata.Entry entry = metadata.get(i);
+ 
+             if (!(entry instanceof MdtaMetadataEntry)) continue;
+@@ -169,7 +169,7 @@ public class SourceMetadata {
+             } catch(Exception ex) {
+                 // Ignored
+             }
+-        }
++        }*/
+ 
+         if (title != null || artist != null || album != null || date != null || genre != null) {
+             manager.onMetadataReceived("quicktime", title, null, artist, album, date, genre);

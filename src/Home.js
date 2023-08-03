@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Image, Dimensions} from 'react-native';
 import {withTheme} from 'styled-components';
 import Background from './Background';
 import Btn from './Btn';
@@ -7,18 +7,32 @@ import Btn from './Btn';
 const Home = props => {
   return (
     <Background>
-      <View style={{marginHorizontal: 40, marginVertical: 100}}>
-        <Text style={{color: 'black', fontSize: 36, marginBottom: 50}}>
-          Welcome To my App
+      <View
+        style={{
+          alignSelf: 'center',
+          marginTop: 250,
+          alignContent: 'center',
+          alignItems: 'center',
+          marginHorizontal: 80,
+        }}>
+        <Text
+          style={{
+            color: 'white',
+            fontSize: 30,
+            marginBottom: 10,
+            fontWeight: '200',
+          }}>
+          Welcome
         </Text>
+
         <Btn
           bgColor="white"
-          textColor="#023020"
+          textColor="black"
           btnLabel="Log In"
           Press={() => props.navigation.navigate('Login')}
         />
         <Btn
-          bgColor="#023020"
+          bgColor="black"
           textColor="white"
           btnLabel="Sign In"
           Press={() => props.navigation.navigate('Signup')}
@@ -28,6 +42,18 @@ const Home = props => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    opacity: 0.3,
+    backgroundColor: 'black',
+    width: 300,
+    height: 300,
+    borderRadius: 20,
+  },
+});
 
 export default Home;
