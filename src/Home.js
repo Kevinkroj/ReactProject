@@ -34,7 +34,7 @@ const Home = props => {
         <Btn
           bgColor="black"
           textColor="white"
-          btnLabel="Sign In"
+          btnLabel="Sign Up"
           Press={() => props.navigation.navigate('Signup')}
         />
       </View>

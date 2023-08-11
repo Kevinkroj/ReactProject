@@ -1,4 +1,4 @@
-import {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -10,16 +10,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {withTheme} from 'styled-components';
-import Background from './Background';
-import Btn from './Btn';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Home from './Home';
-import {NavigationContainer} from '@react-navigation/native';
-import Tabs from './Tabs';
-import {Viewport} from '@skele/components';
-import {Searchbar} from 'react-native-paper';
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AccountInfo from './AccountInfo';
+import {useFocusEffect} from '@react-navigation/native';
+import RotatingCarousel from './RotatingCarousel';
 
 const HomePage = props => {
   const onChangeSearch = query => setSearchQuery(query);
@@ -43,6 +39,29 @@ const HomePage = props => {
 
     {
       id: '6',
+      title: 'Netflix Drama',
+      now: 'Drama',
+      sources:
+        'https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI',
+    },
+    {
+      id: '8',
+      title: 'MTv',
+      now: 'News',
+      sources:
+        'https://e7.pngegg.com/pngimages/961/421/png-clipart-mtv-logo-nickmusic-television-others-miscellaneous-text.png',
+    },
+
+    {
+      id: '9',
+      title: 'News24',
+      now: 'Movies',
+      sources:
+        'https://yt3.googleusercontent.com/ytc/AOPolaRjQppPJTdaqJgdZNtYYZNWHnayq9QWf1m0IQITww=s900-c-k-c0x00ffffff-no-rj',
+    },
+
+    {
+      id: '10',
       title: 'Netflix Drama',
       now: 'Drama',
       sources:
@@ -84,6 +103,41 @@ const HomePage = props => {
     },
   ]);
 
+  const [thirdData, setThirdData] = useState([
+    {
+      id: '1',
+      title: 'Mission Imposible',
+      short: 'beautiful moviee',
+      now: 'Dom and his family and friends are hunted by the vengeful son of drug kingpin Hernan Reyes, Dante (Jason Momoa). Will Dom be able to save his family and friends once again? Or will Dante be able to come out victorious at the end? Who else from Doms past will return from the dead?',
+      sources:
+        'https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:q-80/et00329481-bcufavugyg-portrait.jpg',
+    },
+    {
+      id: '2',
+      title: 'Pixels',
+      short: 'beautiful moviee',
+      now: 'Dom and his family and friends are hunted by the vengeful son of drug kingpin Hernan Reyes, Dante (Jason Momoa). Will Dom be able to save his family and friends once again? Or will Dante be able to come out victorious at the end? Who else from Doms past will return from the dead?',
+      sources:
+        'https://m.media-amazon.com/images/M/MV5BMTIzNDYzMzgtZWMzNS00ODc2LTg2ZmMtOTE2MWZkNzIxMmQ0XkEyXkFqcGdeQXVyNjQ3MDg0MTY@._V1_.jpg',
+    },
+    {
+      id: '3',
+      title: 'Spider-Man',
+      short: 'beautiful moviee',
+      now: 'Dom and his family and friends are hunted by the vengeful son of drug kingpin Hernan Reyes, Dante (Jason Momoa). Will Dom be able to save his family and friends once again? Or will Dante be able to come out victorious at the end? Who else from Doms past will return from the dead?',
+      sources:
+        'https://cps-static.rovicorp.com/2/Open/Sony%20Pictures%20Television/Program/48781848/_derived_jpg_q90_310x470_m0/Spider_Man_Across_the_Spider_Verse_PA_2x3_27_1687956706548_1.jpg',
+    },
+    {
+      id: '4',
+      title: 'Mario',
+      short: 'beautiful moviee',
+      now: 'Dom and his family and friends are hunted by the vengeful son of drug kingpin Hernan Reyes, Dante (Jason Momoa). Will Dom be able to save his family and friends once again? Or will Dante be able to come out victorious at the end? Who else from Doms past will return from the dead?',
+      sources:
+        'https://dvvy6louqcr7j.cloudfront.net/vista/HO00013484/heroPoster/The-Super-Mario-Bros-Movie.png',
+    },
+  ]);
+
   //=========================================================
   const [filteredDataSource, setFilteredDataSource] = useState(data);
   const [search, setSearch] = useState('');
@@ -111,9 +165,47 @@ const HomePage = props => {
     }
   };
 
-  //===========================================================
+  //============================================================================
 
-  //===========================================================
+  //============================== Fetching Data ===============================
+  const [myList, setMyList] = useState([]);
+
+  useEffect(() => {
+    const fetchMyList = async () => {
+      try {
+        const storedList = await AsyncStorage.getItem('@myList');
+        if (storedList) {
+          setMyList(JSON.parse(storedList));
+          console.log(myList);
+        }
+      } catch (error) {
+        console.error('Error fetching My List:', error);
+      }
+    };
+
+    fetchMyList();
+  }, []);
+
+  const handleRefresh = async () => {
+    try {
+      const storedList = await AsyncStorage.getItem('@myList');
+      if (storedList) {
+        setMyList(JSON.parse(storedList));
+      }
+    } catch (error) {
+      console.error('Error fetching My List:', error);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      handleRefresh(); // Fetch the data whenever the screen comes into focus
+    }, []),
+  );
+
+  //=====================================================================
+
+  //=====================================================================
 
   const Item = ({source, title, now}) => (
     <View style={styles.container}>
@@ -149,7 +241,7 @@ const HomePage = props => {
           <View>
             <Image
               style={{
-                height: 250,
+                height: 280,
                 width: 200,
                 borderRadius: 3,
               }}
@@ -158,7 +250,7 @@ const HomePage = props => {
           </View>
           <View>
             <Text style={styles.tekstii}> {title} </Text>
-            <Text style={{color: 'white'}}> {short} </Text>
+            {/* <Text style={{color: 'white'}}> {short} </Text> */}
           </View>
         </TouchableOpacity>
       </View>
@@ -170,30 +262,16 @@ const HomePage = props => {
       <ScrollView>
         <View>
           <View style={{flexDirection: 'row'}}>
-            <Text
+            <Image
               style={{
-                fontSize: 30,
-                fontWeight: '200',
-                color: 'white',
-                marginLeft: 12,
-                marginTop: 30,
-                // marginRight: 140,
-                marginBottom: 0,
-              }}>
-              Hi,
-            </Text>
-            <Text
-              style={{
-                fontSize: 30,
-                fontWeight: '200',
-                color: 'tomato',
-                marginHorizontal: 5,
-                marginTop: 30,
-                // marginRight: 140,
-                marginBottom: 0,
-              }}>
-              Kevin
-            </Text>
+                height: 50,
+                width: 50,
+                borderRadius: 100,
+                marginHorizontal: 20,
+                marginTop: 15,
+              }}
+              source={require('./assets/mtv2.png')}
+            />
           </View>
           <View>
             <TouchableOpacity
@@ -207,18 +285,90 @@ const HomePage = props => {
                 }}>
                 <MaterialCommunityIcons
                   name="account"
-                  size={32}
-                  color="tomato"
-                  style={{flex: 1, position: 'absolute', left: 350}}
+                  size={40}
+                  color="red"
+                  style={{flex: 1, position: 'absolute', left: 340}}
                 />
               </View>
             </TouchableOpacity>
           </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: '200',
+                color: 'white',
+                marginLeft: 10,
+                marginTop: 1,
+              }}>
+              Coming
+            </Text>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: '200',
+                color: 'tomato',
+                marginHorizontal: 7,
+                marginTop: 1,
+              }}>
+              Soon
+            </Text>
+
+            {/* <TextInput
+            style={styles.container}
+            onChangeText={text => searchFilterFunction(text)}
+            value={search}
+            underlineColorAndroid="grey"
+            placeholder="Search Here"
+            placeholderTextColor="grey"
+          /> */}
+          </View>
+
+          <View>
+            <RotatingCarousel />
+          </View>
+          <View style={{marginTop: 10}}>
+            <View style={{flexDirection: 'row'}}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: '200',
+                  color: 'white',
+                  marginHorizontal: 15,
+                  marginTop: 5,
+                  marginRight: 1,
+                  marginBottom: 10,
+                }}>
+                Live
+              </Text>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: '200',
+                  color: 'tomato',
+                  marginHorizontal: 1,
+                  marginTop: 5,
+                  marginRight: 1,
+                  marginBottom: 10,
+                }}>
+                TV
+              </Text>
+            </View>
+            <FlatList
+              data={data}
+              keyExtractor={item => item.id}
+              horizontal
+              renderItem={({item}) => (
+                <Item title={item.title} source={item.sources} now={item.now} />
+              )}
+            />
+          </View>
+
           <View>
             <Text
               style={{
-                fontSize: 15,
-                fontWeight: 'bold',
+                fontSize: 20,
+                fontWeight: '200',
                 color: 'white',
                 marginHorizontal: 15,
                 marginTop: 5,
@@ -244,43 +394,15 @@ const HomePage = props => {
             />
           </View>
         </View>
-        <View>
-          <Text
-            style={{
-              fontSize: 30,
-              fontWeight: 'bold',
-              color: '#F2F3F5',
-              marginHorizontal: 15,
-              marginTop: 10,
-            }}>
-            Kanalet
-          </Text>
-
-          <TextInput
-            style={styles.container}
-            onChangeText={text => searchFilterFunction(text)}
-            value={search}
-            underlineColorAndroid="grey"
-            placeholder="Search Here"
-            placeholderTextColor="grey"
-          />
-        </View>
-
-        <View>
-          <FlatList
-            data={filteredDataSource}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <Item title={item.title} source={item.sources} now={item.now} />
-            )}
-          />
+        <View style={styles.myListContainer}>
+          <AccountInfo />
         </View>
 
         <View>
           <Text
             style={{
-              fontSize: 15,
-              fontWeight: 'bold',
+              fontSize: 20,
+              fontWeight: '200',
               color: 'white',
               marginHorizontal: 15,
               marginTop: 5,
@@ -293,22 +415,7 @@ const HomePage = props => {
         <View>
           <FlatList
             horizontal={true}
-            data={seconddata}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <SecondItem
-                title={item.title}
-                source={item.sources}
-                now={item.now}
-                short={item.short}
-              />
-            )}
-          />
-        </View>
-        <View>
-          <FlatList
-            horizontal={true}
-            data={seconddata}
+            data={thirdData}
             keyExtractor={item => item.id}
             renderItem={({item}) => (
               <SecondItem
@@ -342,6 +449,14 @@ const styles = StyleSheet.create({
 
     color: 'grey',
   },
+  myListContainer: {
+    flex: 1,
+    //flexDirection: 'row',
+    marginTop: 1,
+    height: 270,
+    width: Dimensions.get('window').width,
+    alignContent: 'space-between',
+  },
   secondcontainer: {
     flexDirection: 'column',
     backgroundColor: 'black',
@@ -367,7 +482,7 @@ const styles = StyleSheet.create({
   },
   tekstii: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '200',
     color: 'white',
   },
 });

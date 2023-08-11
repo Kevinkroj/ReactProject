@@ -116,14 +116,17 @@ const Account = props => {
             <Text style={styles.texts}>Notifications</Text>
           </View>
 
-          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-            <MaterialCommunityIcons
-              name="advertisements"
-              size={30}
-              color="white"
-            />
-            <Text style={styles.texts}>Ads</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('RotatingCarousel')}>
+            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+              <MaterialCommunityIcons
+                name="advertisements"
+                size={30}
+                color="white"
+              />
+              <Text style={styles.texts}>Ads</Text>
+            </View>
+          </TouchableOpacity>
 
           <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
             <Icon name="language" size={30} color="white" />

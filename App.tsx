@@ -23,6 +23,7 @@ import ScreenTime from './src/ScreenTime';
 import DescriptionPage from './src/DescriptionPage';
 import VideoMovies from './src/VideoMovies';
 import Trailer from './src/Trailer';
+import RotatingCarousel from './src/RotatingCarousel';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -100,6 +101,7 @@ function App() {
         <Stack.Screen name="DescriptionPage" component={DescriptionPage} />
         <Stack.Screen name="VideoMovies" component={VideoMovies} />
         <Stack.Screen name="Trailer" component={Trailer} />
+        <Stack.Screen name="RotatingCarousel" component={RotatingCarousel} />
       </Stack.Navigator>
     </NavigationContainer>
   );

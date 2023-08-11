@@ -1,16 +1,54 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {withTheme} from 'styled-components';
 import Background from './Background';
 import Btn from './Btn';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Signup = props => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+
+  const register = async () => {
+    if (!username || !password || !email) {
+      Alert.alert('Error', 'Please fill in all fields.');
+      return;
+    }
+
+    try {
+      // Check if username already exists
+      const userExists = await AsyncStorage.getItem(username);
+      if (userExists) {
+        Alert.alert('Error', 'Username already exists.');
+        return;
+      }
+
+      const emailExist = await AsyncStorage.getItem(email);
+      if (emailExist) {
+        Alert.alert('Error', 'email already exists.');
+        return;
+      }
+
+      // Store user data in AsyncStorage
+      await AsyncStorage.setItem(email, password);
+
+      Alert.alert('Success', 'Signup successful.');
+      // Navigate to the login screen or perform automatic login
+      props.navigation.navigate('HomePage');
+    } catch (error) {
+      console.error('Error signing up:', error);
+      Alert.alert('Error', 'An error occurred while signing up.');
+    }
+  };
+
   return (
     <Background>
       <View style={{flex: 1, marginTop: 140}}>
@@ -31,25 +69,31 @@ const Signup = props => {
                 style={{height: 40, margin: 12, borderWidth: 1, padding: 10}}
                 placeholder="Enter Name"
                 placeholderTextColor="black"
+                value={username}
+                onChangeText={setUsername}
               />
 
               <TextInput
                 style={{height: 40, margin: 12, borderWidth: 1, padding: 10}}
                 placeholder="Enter E-mail"
                 placeholderTextColor="black"
+                value={email}
+                onChangeText={setEmail}
               />
               <TextInput
                 secureTextEntry={true}
                 style={{height: 40, margin: 12, borderWidth: 1, padding: 10}}
                 placeholder="Enter Password"
                 placeholderTextColor="black"
+                value={password}
+                onChangeText={setPassword}
               />
 
               <Btn
                 bgColor="black"
                 textColor="white"
                 btnLabel="Sign Up"
-                Press={() => props.navigation.navigate('HomePage')}
+                Press={register}
               />
 
               <TouchableOpacity>

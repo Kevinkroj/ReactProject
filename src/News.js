@@ -126,7 +126,7 @@ const News = props => {
 
   return (
     <View>
-      <View style={{backgroundColor: 'black'}}>
+      {/* <View style={{flex: 1, backgroundColor: 'black'}}>
         <Text
           style={{
             color: 'white',
@@ -135,7 +135,7 @@ const News = props => {
           }}>
           Shorts
         </Text>
-      </View>
+      </View> */}
       <Viewport.Tracker>
         <FlatList
           data={DATA}

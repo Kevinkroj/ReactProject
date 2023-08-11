@@ -8,6 +8,7 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {
   NavigationContainer,
@@ -16,6 +17,8 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Item} from 'react-native-paper/lib/typescript/src/components/Drawer/Drawer';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from '@react-navigation/native';
 
 const DescriptionPage = props => {
   const pershkrimi = props.route.params.desc;
@@ -90,6 +93,78 @@ const DescriptionPage = props => {
   );
   //===========================================================
 
+  //===================== Get Data ==============================
+  const [myList, setMyList] = useState([]);
+
+  useEffect(() => {
+    const fetchMyList = async () => {
+      try {
+        const storedList = await AsyncStorage.getItem('@myList');
+        if (storedList) {
+          setMyList(JSON.parse(storedList));
+        }
+      } catch (error) {
+        console.error('Error fetching My List:', error);
+      }
+    };
+
+    fetchMyList();
+  }, []);
+
+  const addToMyList = async () => {
+    try {
+      const newItem = props.route.params.foto;
+
+      //   const newItem = {
+      //     title: props.route.params.foto,
+      //     // Add other properties of the object here
+      //   };
+      console.log('new item', newItem, myList);
+      const existingItem = myList.find(item => item === newItem);
+      if (!existingItem) {
+        const updatedList = [...myList, newItem];
+        await AsyncStorage.setItem('@myList', JSON.stringify(updatedList));
+
+        console.log('Item added to My List', updatedList);
+      } else {
+        console.log('Item already exists in My List');
+        Alert.alert('Movie already exists in My List');
+      }
+    } catch (error) {
+      console.error('Error adding item to My List:', error);
+    }
+  };
+
+  const handleRefresh = async () => {
+    console.log('Refreshing data...');
+    try {
+      const storedList = await AsyncStorage.getItem('@myList');
+      if (storedList) {
+        setMyList(JSON.parse(storedList));
+        console.log('Refreshed data:', JSON.parse(storedList));
+      }
+    } catch (error) {
+      console.error('Error refreshing My List:', error);
+    }
+  };
+
+  const clearMyList = async () => {
+    try {
+      await AsyncStorage.removeItem('@myList');
+      console.log('My List data cleared');
+
+      // You can also update your state to reflect the cleared list
+      setMyList([]);
+
+      // Trigger a refresh of your list immediately after clearing
+      handleRefresh();
+    } catch (error) {
+      console.error('Error clearing My List:', error);
+    }
+  };
+
+  //=============================================================
+
   return (
     <ScrollView
       style={{
@@ -111,9 +186,17 @@ const DescriptionPage = props => {
           size={30}
           color="white"
           shadowOpacity={0.2}
-          onPress={() => props.navigation.goBack()}
+          onPress={() => props.navigation.navigate('HomePage') && handleRefresh}
           style={{position: 'absolute', top: 20, left: 10}}
         />
+        <TouchableOpacity onPress={clearMyList}>
+          <AntDesign
+            name="delete"
+            size={30}
+            // onPress={handleRefresh}
+            color="white"
+          />
+        </TouchableOpacity>
       </View>
       <View style={{alignContent: 'flex-start'}}>
         <Text style={{color: 'tomato', fontSize: 28, fontWeight: '200'}}>
@@ -145,10 +228,12 @@ const DescriptionPage = props => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <AntDesign name="plus" size={30} color="white" />
-            <Text style={{color: 'white', fontSize: 15, fontWeight: '200'}}>
-              My List
-            </Text>
+            <TouchableOpacity onPress={addToMyList}>
+              <AntDesign name="plus" size={30} color="white" />
+              <Text style={{color: 'white', fontSize: 15, fontWeight: '200'}}>
+                My List
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View
@@ -169,6 +254,7 @@ const DescriptionPage = props => {
               onPress={() => props.navigation.navigate('VideoMovies')}
               color="white"
             />
+
             <Text style={{color: 'white', fontSize: 15, fontWeight: '200'}}>
               Play
             </Text>
