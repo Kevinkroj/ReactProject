@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AccountInfo from './AccountInfo';
 import {useFocusEffect} from '@react-navigation/native';
@@ -241,8 +242,8 @@ const HomePage = props => {
           <View>
             <Image
               style={{
-                height: 280,
-                width: 200,
+                height: 260,
+                width: 180,
                 borderRadius: 3,
               }}
               source={{uri: source}}
@@ -264,14 +265,35 @@ const HomePage = props => {
           <View style={{flexDirection: 'row'}}>
             <Image
               style={{
-                height: 50,
-                width: 50,
+                // flex: 1,
+                height: 55,
+                width: 55,
                 borderRadius: 100,
                 marginHorizontal: 20,
                 marginTop: 15,
+                top: 15,
               }}
               source={require('./assets/mtv2.png')}
             />
+          </View>
+          <View>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('SearchPage')}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  alignItems: 'flex-end',
+                  marginBottom: 10,
+                }}>
+                <Fontisto
+                  name="search"
+                  size={25}
+                  color="red"
+                  style={{flex: 1, position: 'absolute', left: 300}}
+                />
+              </View>
+            </TouchableOpacity>
           </View>
           <View>
             <TouchableOpacity
@@ -285,7 +307,7 @@ const HomePage = props => {
                 }}>
                 <MaterialCommunityIcons
                   name="account"
-                  size={40}
+                  size={45}
                   color="red"
                   style={{flex: 1, position: 'absolute', left: 340}}
                 />
@@ -356,6 +378,7 @@ const HomePage = props => {
             </View>
             <FlatList
               data={data}
+              nestedScrollEnabled
               keyExtractor={item => item.id}
               horizontal
               renderItem={({item}) => (
@@ -382,6 +405,7 @@ const HomePage = props => {
             <FlatList
               horizontal={true}
               data={seconddata}
+              nestedScrollEnabled
               keyExtractor={item => item.id}
               renderItem={({item}) => (
                 <SecondItem
@@ -414,8 +438,10 @@ const HomePage = props => {
         </View>
         <View>
           <FlatList
-            horizontal={true}
+            //horizontal={true}
             data={thirdData}
+            numColumns={2}
+            nestedScrollEnabled
             keyExtractor={item => item.id}
             renderItem={({item}) => (
               <SecondItem

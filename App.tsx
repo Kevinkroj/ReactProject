@@ -24,6 +24,7 @@ import DescriptionPage from './src/DescriptionPage';
 import VideoMovies from './src/VideoMovies';
 import Trailer from './src/Trailer';
 import RotatingCarousel from './src/RotatingCarousel';
+import SearchPage from './src/SearchPage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -50,6 +51,8 @@ const HomeStack = () => {
             iconName = 'newspaper-o';
           } else if (route.name === 'Account') {
             iconName = 'user';
+          } else if (route.name === 'SearchPage') {
+            iconName = 'search';
           }
 
           // Return the Icon component with the appropriate icon name
@@ -77,6 +80,7 @@ const HomeStack = () => {
         })}
       />
 
+      <Tab.Screen name="SearchPage" component={SearchPage} />
       <Tab.Screen name="News" component={News} />
       <Tab.Screen name="Account" component={Account} />
     </Tab.Navigator>
